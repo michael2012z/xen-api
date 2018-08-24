@@ -1111,7 +1111,7 @@ let power_behaviour =
   let call_plugin = call
       ~name:"call_plugin"
       ~in_product_since:rel_cream
-      ~doc:"Call a XenAPI plugin on this vm"
+      ~doc:"Call a management API plugin on this vm"
       ~params:[Ref _vm, "vm", "The vm";
                String, "plugin", "The name of the plugin";
                String, "fn", "The name of the function within the plugin";
