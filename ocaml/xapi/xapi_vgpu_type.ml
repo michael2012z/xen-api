@@ -247,7 +247,7 @@ end
 
 module Nvidia_old = struct
   let conf_dir = "/usr/share/nvidia/vgx"
-  let vendor_id = 0x10de
+  let vendor_id = 0xffff
 
   type vgpu_conf = {
     identifier : Identifier.nvidia_id;
@@ -614,6 +614,7 @@ module Vendor_nvidia = struct
   let read_whitelist ~whitelist ~device_id =
     try
       let ch = open_in whitelist in
+      debug "michael: now we are in NVidia_Vender read_whitelist";
       let t = 
         finally (fun () ->
           let i = Xmlm.make_input ~strip:true (`Channel ch) in
