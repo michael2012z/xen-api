@@ -654,7 +654,8 @@ module MD = struct
     let vgpu_type = vgpu.Db_actions.vGPU_type in
     let internal_config =
       Db.VGPU_type.get_internal_config ~__context ~self:vgpu_type in
-    debug "michael: of_nvidia_vgpu: internal_config = %s" internal_config;
+    let internal_config_string = List.concat [List.map (fun (x,y) -> debug "%s : %s" x y) internal_config; []] in
+    debug "michael: of_nvidia_vgpu: internal_config = %s" internal_config_string;
     let config_file =
       try List.assoc Xapi_globs.vgpu_config_key internal_config
       with Not_found -> failwith "NVIDIA vGPU config file not specified"
