@@ -654,16 +654,19 @@ module MD = struct
     let vgpu_type = vgpu.Db_actions.vGPU_type in
     let internal_config =
       Db.VGPU_type.get_internal_config ~__context ~self:vgpu_type in
+    debug "michael: of_nvidia_vgpu: internal_config = %s" internal_config;
     let config_file =
       try List.assoc Xapi_globs.vgpu_config_key internal_config
       with Not_found -> failwith "NVIDIA vGPU config file not specified"
     in
+    debug "michael: of_nvidia_vgpu: config_file 0 = %s" config_file;
     let config_file =
       try
         let extra_args =
           List.assoc Xapi_globs.vgpu_extra_args_key vm.API.vM_platform in
         Printf.sprintf "%s,%s" config_file extra_args
       with Not_found -> config_file
+    debug "michael: of_nvidia_vgpu: config_file 1 = %s" config_file;
     in
     let implementation =
       Nvidia {
