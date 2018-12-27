@@ -652,27 +652,11 @@ module MD = struct
     let physical_pci_address = get_target_pci_address ~__context vgpu in
     (* Get the vGPU config. *)
     let vgpu_type = vgpu.Db_actions.vGPU_type in
-    let internal_config =
-      Db.VGPU_type.get_internal_config ~__context ~self:vgpu_type in
-    debug "michael: of_nvidia_vgpu: internal_config:";
-    ignore( List.map (fun (x,y) -> debug "%s : %s" x y) internal_config );
-    let config_file =
-      try List.assoc Xapi_globs.vgpu_config_key internal_config
-      with Not_found -> failwith "NVIDIA vGPU config file not specified"
-    in
-    debug "michael: of_nvidia_vgpu: config_file 0 = %s" config_file;
-    let config_file =
-      try
-        let extra_args =
-          List.assoc Xapi_globs.vgpu_extra_args_key vm.API.vM_platform in
-            debug "michael: of_nvidia_vgpu: config_file 1 = %s" config_file;
-        Printf.sprintf "%s,%s" config_file extra_args
-      with Not_found -> config_file
-    in
+    let model_name = Db.VGPU_type.get_model_name ~__context ~self:vgpu_type in
     let implementation =
       Nvidia {
         physical_pci_address = None; (* unused *)
-        config_file;
+        config_file = model_name;
       }
     in {
       id = (vm.API.vM_uuid, vgpu.Db_actions.vGPU_device);
